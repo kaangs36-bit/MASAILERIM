@@ -1,0 +1,6 @@
+{
+  "appId": "com.mrl.personeltakip",
+  "appName": "MRL Personel Takip",
+  "webDir": "www",
+  "server": { "androidScheme": "https" }
+}
