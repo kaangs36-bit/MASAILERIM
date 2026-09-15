@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="theme-color" content="#243c2f" />
-  <title>MRL Personel Takip</title>
+  <title>Mesailerim</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <div><small>MRL MOBİLYA</small><h1>Personel Takip</h1></div>
+    <div><small>MRL MOBİLYA</small><h1>Mesailerim</h1></div>
     <button class="icon" id="backupBtn" title="Yedek">⇩</button>
   </header>
 
@@ -28,6 +28,7 @@
 
     <section id="employees" class="page">
       <div class="section-title"><h2>Personeller</h2><button class="primary small" id="addEmployeeBtn">+ Personel</button></div>
+      <input class="search" id="employeeSearch" placeholder="Personel ara…" autocomplete="off">
       <div id="employeeList" class="list"></div>
     </section>
 
@@ -68,7 +69,8 @@
 
   <dialog id="recordDialog">
     <form id="recordForm" method="dialog">
-      <h3>Günlük kayıt ekle</h3>
+      <h3 id="recordDialogTitle">Günlük kayıt ekle</h3>
+      <input type="hidden" id="recordId">
       <label>Personel<select id="recordEmployee" required></select></label>
       <label>Tarih<input id="recordDate" type="date" required></label>
       <label>Mesai saati<input id="recordOvertimeHours" type="number" min="0" step="0.5" value="0"></label>
@@ -77,6 +79,13 @@
       <label>Not<input id="recordNote"></label>
       <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
     </form>
+  </dialog>
+
+  <dialog id="detailDialog">
+    <div class="dialog-body">
+      <div class="detail-head"><div><small>AYLIK PERSONEL DÖKÜMÜ</small><h3 id="detailName"></h3></div><button class="icon dark close">×</button></div>
+      <div id="detailContent"></div>
+    </div>
   </dialog>
 
   <dialog id="paymentDialog">

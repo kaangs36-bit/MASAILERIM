@@ -1,6 +1,6 @@
-# MRL Personel Takip
+# Mesailerim
 
-Çevrimdışı Android personel, mesai, avans, yemek fişi ve ödeme takip uygulaması.
+MRL Mobilya için çevrimdışı Android personel, mesai, avans, yemek fişi ve ödeme takip uygulaması.
 
 ## GitHub üzerinden APK alma
 
