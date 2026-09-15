@@ -12,3 +12,7 @@ MRL Mobilya için çevrimdışı Android personel, mesai, avans, yemek fişi ve 
 6. ZIP'i açın ve `app-debug.apk` dosyasını Android telefona kurun.
 
 Uygulamadaki veriler yalnızca telefonun kendi hafızasında tutulur. Uygulamayı silmeden önce Ayarlar bölümünden JSON yedeği alın.
+
+## Windows sürümü
+
+GitHub Actions içindeki **Windows Uygulaması Oluştur** işleminin `Mesailerim-Windows` çıktısında kurulum ve taşınabilir `.exe` dosyaları bulunur.

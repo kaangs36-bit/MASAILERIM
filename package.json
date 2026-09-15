@@ -2,9 +2,11 @@
   "name": "mrl-personel-takip",
   "version": "1.0.0",
   "private": true,
+  "main": "electron-main.js",
   "scripts": {
     "sync": "npx cap sync android",
-    "android": "npx cap open android"
+    "android": "npx cap open android",
+    "build:win": "node scripts/copy-pdf.mjs && electron-builder --win --x64"
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",
@@ -12,6 +14,16 @@
     "pdfmake": "^0.2.20"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.4.3"
+    "@capacitor/cli": "^7.4.3",
+    "electron": "^37.2.6",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.mrl.mesailerim.desktop",
+    "productName": "Mesailerim",
+    "directories": { "output": "dist" },
+    "files": ["www/**/*", "electron-main.js"],
+    "win": { "target": ["nsis", "portable"] },
+    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true, "createStartMenuShortcut": true }
   }
 }

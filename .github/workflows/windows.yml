@@ -1,0 +1,27 @@
+name: Windows Uygulaması Oluştur
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Projeyi al
+        uses: actions/checkout@v4
+      - name: Node.js kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Paketleri kur
+        run: npm install
+      - name: Windows uygulamasını oluştur
+        run: npm run build:win
+      - name: Windows dosyalarını yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mesailerim-Windows
+          path: dist/*.exe
+          retention-days: 30
