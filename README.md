@@ -20,3 +20,7 @@ GitHub Actions içindeki **Windows Uygulaması Oluştur** işleminin `Mesailerim
 ## Yedekleme
 
 Yerel kayıtlar cihazda da saklanır. Ayrıca Ayarlar bölümünden JSON yedeği indirilebilir ve geri yüklenebilir.
+
+## Tasarım
+
+Gece laciverti, turkuaz ve sıcak altın renk paletine sahip Mesailerim marka arayüzü; Android ve Windows için ortak uygulama simgesi kullanır.
