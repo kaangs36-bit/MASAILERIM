@@ -15,4 +15,4 @@ Uygulamadaki veriler yalnızca telefonun kendi hafızasında tutulur. Uygulamay�
 
 ## Windows sürümü
 
-GitHub Actions içindeki **Windows Uygulaması Oluştur** işleminin `Mesailerim-Windows` çıktısında kurulum ve taşınabilir `.exe` dosyaları bulunur.
+GitHub Actions içindeki **Windows Uygulaması Oluştur** işleminin `Mesailerim-Windows` çıktısında kurulumsuz çalışan tek `Mesailerim.exe` dosyası bulunur.

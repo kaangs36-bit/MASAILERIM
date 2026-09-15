@@ -23,7 +23,6 @@
     "productName": "Mesailerim",
     "directories": { "output": "dist" },
     "files": ["www/**/*", "electron-main.js"],
-    "win": { "target": ["nsis", "portable"] },
-    "nsis": { "oneClick": false, "allowToChangeInstallationDirectory": true, "createDesktopShortcut": true, "createStartMenuShortcut": true }
+    "win": { "target": ["portable"], "artifactName": "Mesailerim.exe" }
   }
 }
