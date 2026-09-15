@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#243c2f" />
+  <title>MRL Personel Takip</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div><small>MRL MOBİLYA</small><h1>Personel Takip</h1></div>
+    <button class="icon" id="backupBtn" title="Yedek">⇩</button>
+  </header>
+
+  <main>
+    <section id="dashboard" class="page active">
+      <div class="period"><button id="prevMonth">‹</button><strong id="periodLabel"></strong><button id="nextMonth">›</button></div>
+      <div class="cards">
+        <article><span>Toplam ödenecek</span><b id="totalPay">₺0</b></article>
+        <article><span>Toplam mesai</span><b id="totalOvertime">₺0</b></article>
+        <article><span>Toplam avans</span><b id="totalAdvance">₺0</b></article>
+        <article><span>Kalan ödeme</span><b id="totalRemaining">₺0</b></article>
+      </div>
+      <div class="section-title"><h2>Personel ödeme özeti</h2><button class="link" data-page="employees">Personeller</button></div>
+      <div id="summaryList" class="list"></div>
+    </section>
+
+    <section id="employees" class="page">
+      <div class="section-title"><h2>Personeller</h2><button class="primary small" id="addEmployeeBtn">+ Personel</button></div>
+      <div id="employeeList" class="list"></div>
+    </section>
+
+    <section id="records" class="page">
+      <div class="section-title"><h2>Günlük kayıtlar</h2><button class="primary small" id="addRecordBtn">+ Kayıt</button></div>
+      <div class="filters"><select id="recordEmployeeFilter"></select><input id="recordMonth" type="month"></div>
+      <div id="recordList" class="list"></div>
+    </section>
+
+    <section id="settings" class="page">
+      <h2>Ayarlar ve yedek</h2>
+      <div class="settings-card">
+        <button class="wide" id="exportJson">JSON yedeği indir</button>
+        <label class="wide file">JSON yedeğini geri yükle<input id="importJson" type="file" accept="application/json"></label>
+        <button class="wide" id="exportCsv">Aylık özeti CSV indir</button>
+        <p>Veriler bu telefonda çevrimdışı saklanır. Uygulamayı silmeden veya telefon değiştirmeden önce yedek alın.</p>
+      </div>
+    </section>
+  </main>
+
+  <nav>
+    <button class="active" data-page="dashboard"><span>⌂</span>Özet</button>
+    <button data-page="employees"><span>♙</span>Personel</button>
+    <button data-page="records"><span>＋</span>Kayıtlar</button>
+    <button data-page="settings"><span>⚙</span>Ayarlar</button>
+  </nav>
+
+  <dialog id="employeeDialog">
+    <form id="employeeForm" method="dialog">
+      <h3 id="employeeDialogTitle">Personel ekle</h3>
+      <input type="hidden" id="employeeId">
+      <label>Ad soyad<input id="employeeName" required></label>
+      <label>Aylık maaş<input id="employeeSalary" type="number" min="0" step="0.01" required></label>
+      <label>Aylık normal çalışma saati<input id="employeeHours" type="number" min="1" value="300" required></label>
+      <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="recordDialog">
+    <form id="recordForm" method="dialog">
+      <h3>Günlük kayıt ekle</h3>
+      <label>Personel<select id="recordEmployee" required></select></label>
+      <label>Tarih<input id="recordDate" type="date" required></label>
+      <label>Mesai saati<input id="recordOvertimeHours" type="number" min="0" step="0.5" value="0"></label>
+      <label>Avans<input id="recordAdvance" type="number" min="0" step="0.01" value="0"></label>
+      <label>Yemek fişi<input id="recordMeal" type="number" min="0" step="0.01" value="0"></label>
+      <label>Not<input id="recordNote"></label>
+      <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="paymentDialog">
+    <form id="paymentForm" method="dialog">
+      <h3>Yapılan ödeme</h3>
+      <input type="hidden" id="paymentEmployeeId">
+      <p id="paymentPerson"></p>
+      <label>Ödenen tutar<input id="paymentAmount" type="number" min="0" step="0.01" required></label>
+      <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
+    </form>
+  </dialog>
+
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
