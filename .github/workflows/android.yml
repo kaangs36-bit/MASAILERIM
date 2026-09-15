@@ -22,6 +22,10 @@ jobs:
           java-version: 21
       - name: Paketleri kur
         run: npm install
+      - name: PDF motorunu uygulamaya ekle
+        run: |
+          cp node_modules/pdfmake/build/pdfmake.min.js www/pdfmake.min.js
+          cp node_modules/pdfmake/build/vfs_fonts.js www/vfs_fonts.js
       - name: Android projesini oluştur
         run: npx cap add android
       - name: APK derle
