@@ -1,18 +1,22 @@
 # Mesailerim
 
-MRL Mobilya için çevrimdışı Android personel, mesai, avans, yemek fişi ve ödeme takip uygulaması.
+MRL Mobilya için Android ve Windows üzerinde çalışan personel, mesai, avans, yemek fişi, devamsızlık ve ödeme takip uygulaması.
+
+## Telefon ve bilgisayar senkronizasyonu
+
+Uygulamanın **Ayarlar** ekranından bir bulut hesabı oluşturun. Telefon ve bilgisayarda aynı e-posta ve şifreyle giriş yaptığınızda kayıtlar Supabase üzerinden otomatik eşitlenir. İnternet yokken kayıt girmeye devam edilebilir; bağlantı geri geldiğinde bekleyen değişiklikler gönderilir.
 
 ## GitHub üzerinden APK alma
 
-1. GitHub'da boş bir depo oluşturun.
-2. Bu ZIP'in içindeki dosyaları deponun ana dizinine yükleyin.
-3. GitHub'da **Actions** sekmesine girin.
-4. **Android APK Oluştur** iş akışını açıp **Run workflow** seçeneğine basın.
-5. İşlem tamamlanınca sayfanın altındaki **Artifacts** bölümünden `MRL-Personel-Takip-APK` dosyasını indirin.
-6. ZIP'i açın ve `app-debug.apk` dosyasını Android telefona kurun.
-
-Uygulamadaki veriler yalnızca telefonun kendi hafızasında tutulur. Uygulamayı silmeden önce Ayarlar bölümünden JSON yedeği alın.
+1. GitHub'da **Actions** sekmesine girin.
+2. **Android APK Oluştur** iş akışını açın.
+3. Tamamlanan çalışmanın **Artifacts** bölümünden `MRL-Personel-Takip-APK` dosyasını indirin.
+4. ZIP'i açın ve `app-debug.apk` dosyasını Android telefona kurun.
 
 ## Windows sürümü
 
 GitHub Actions içindeki **Windows Uygulaması Oluştur** işleminin `Mesailerim-Windows` çıktısında kurulumsuz çalışan tek `Mesailerim.exe` dosyası bulunur.
+
+## Yedekleme
+
+Yerel kayıtlar cihazda da saklanır. Ayrıca Ayarlar bölümünden JSON yedeği indirilebilir ve geri yüklenebilir.
