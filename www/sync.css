@@ -1,0 +1,14 @@
+.sync-card{margin-bottom:22px}
+.sync-heading{display:flex;align-items:center;justify-content:space-between}
+.sync-heading strong{display:block;font-size:17px}
+.sync-status{display:block;margin-top:4px;font-size:12px;color:var(--muted)}
+.sync-status.online{color:#287547}
+.sync-status.error{color:var(--red)}
+.sync-dot{width:13px;height:13px;border-radius:50%;background:#aeb4ae;box-shadow:0 0 0 5px #aeb4ae20}
+.sync-dot.online{background:#35a95f;box-shadow:0 0 0 5px #35a95f20}
+.sync-dot.busy{background:var(--gold);box-shadow:0 0 0 5px #c49a5520}
+.sync-dot.error{background:var(--red);box-shadow:0 0 0 5px #a8433e20}
+.sync-card label{font-size:13px;font-weight:700}
+.sync-card label input{display:block;width:100%;margin-top:6px;border:1px solid #d7dad5;background:white;border-radius:11px;padding:12px;font-weight:400}
+.sync-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#signedInActions{display:grid;gap:8px}
