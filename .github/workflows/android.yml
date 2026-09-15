@@ -1,0 +1,35 @@
+name: Android APK Oluştur
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Projeyi al
+        uses: actions/checkout@v4
+      - name: Node.js kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Java kur
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Paketleri kur
+        run: npm install
+      - name: Android projesini oluştur
+        run: npx cap add android
+      - name: APK derle
+        working-directory: android
+        run: ./gradlew assembleDebug
+      - name: APK dosyasını yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: MRL-Personel-Takip-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
