@@ -12,3 +12,4 @@
 .sync-card label input{display:block;width:100%;margin-top:6px;border:1px solid #d7dad5;background:white;border-radius:11px;padding:12px;font-weight:400}
 .sync-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 #signedInActions{display:grid;gap:8px}
+[hidden]{display:none!important}
