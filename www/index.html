@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#243c2f" />
   <title>Mesailerim</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="quick.css" />
 </head>
 <body>
   <header>
@@ -33,7 +34,15 @@
     </section>
 
     <section id="records" class="page">
-      <div class="section-title"><h2>Günlük kayıtlar</h2><button class="primary small" id="addRecordBtn">+ Kayıt</button></div>
+      <div class="section-title"><h2>Toplu günlük giriş</h2><button class="ghost small" id="addRecordBtn">Tekli giriş</button></div>
+      <div class="quick-panel">
+        <label>Tarih<input id="quickDate" type="date"></label>
+        <div class="quick-actions"><button class="mini" id="markAllPresent">Tümünü geldi yap</button><button class="mini" id="clearQuickHours">Mesaileri temizle</button></div>
+        <div class="quick-head"><span>Personel / Durum</span><span>Mesai</span><span>Avans</span><span>Yemek</span></div>
+        <div id="quickList"></div>
+        <button class="wide" id="saveQuick">Tüm personeli kaydet</button>
+      </div>
+      <div class="section-title"><h2>Kayıt geçmişi</h2></div>
       <div class="filters"><select id="recordEmployeeFilter"></select><input id="recordMonth" type="month"></div>
       <div id="recordList" class="list"></div>
     </section>

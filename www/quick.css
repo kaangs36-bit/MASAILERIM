@@ -1,0 +1,13 @@
+.pdf-button{margin-bottom:12px}
+.quick-panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:20px;box-shadow:0 3px 12px #26382b0a}
+.quick-panel>label{display:block;font-size:12px;font-weight:800;margin-bottom:9px}
+.quick-panel>label input{display:block;width:100%;margin-top:5px;padding:11px;border:1px solid #d7dad5;border-radius:10px}
+.quick-actions{display:flex;gap:7px;margin:8px 0 12px}
+.quick-head,.quick-row{display:grid;grid-template-columns:minmax(128px,1.6fr) repeat(3,minmax(54px,.7fr));gap:6px;align-items:center}
+.quick-head{font-size:10px;color:var(--muted);font-weight:800;padding:0 4px 6px}
+.quick-row{padding:9px 4px;border-top:1px solid #edf0eb}
+.quick-person strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.quick-person select{width:100%;margin-top:4px;border:1px solid #d7dad5;border-radius:8px;padding:7px 3px;background:#f7f8f5;font-size:11px}
+.quick-row input{width:100%;min-width:0;padding:9px 4px;border:1px solid #d7dad5;border-radius:8px;text-align:center;font-size:12px}
+.quick-panel>.wide{margin-top:12px}
+@media(max-width:420px){.quick-panel{padding:10px}.quick-head,.quick-row{grid-template-columns:minmax(112px,1.5fr) repeat(3,minmax(48px,.65fr));gap:4px}.quick-row input{padding:8px 2px}}
