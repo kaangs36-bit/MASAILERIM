@@ -7,6 +7,7 @@
   <title>Mesailerim</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="quick.css" />
+  <link rel="stylesheet" href="sync.css" />
 </head>
 <body>
   <header>
@@ -56,6 +57,20 @@
     </section>
 
     <section id="settings" class="page">
+      <h2>Senkronizasyon</h2>
+      <div class="settings-card sync-card">
+        <div class="sync-heading"><div><strong>Telefon ↔ Bilgisayar</strong><span id="syncStatus" class="sync-status offline">Bağlı değil</span></div><span id="syncDot" class="sync-dot"></span></div>
+        <p id="syncInfo">Aynı hesapla giriş yaptığında bütün kayıtların cihazların arasında otomatik eşitlenir.</p>
+        <div id="authFields">
+          <label>E-posta<input id="syncEmail" type="email" autocomplete="email" placeholder="ornek@email.com"></label>
+          <label>Şifre<input id="syncPassword" type="password" minlength="6" autocomplete="current-password" placeholder="En az 6 karakter"></label>
+          <div class="sync-actions"><button class="ghost" id="signUpBtn">Hesap oluştur</button><button class="primary" id="signInBtn">Giriş yap</button></div>
+        </div>
+        <div id="signedInActions" hidden>
+          <button class="wide" id="syncNowBtn">Şimdi eşitle</button>
+          <button class="ghost wide" id="signOutBtn">Hesaptan çık</button>
+        </div>
+      </div>
       <h2>Ayarlar ve yedek</h2>
       <div class="settings-card">
         <button class="wide" id="exportJson">JSON yedeği indir</button>
@@ -121,5 +136,6 @@
   <script src="pdfmake.min.js"></script>
   <script src="vfs_fonts.js"></script>
   <script src="app.js"></script>
+  <script src="sync.js"></script>
 </body>
 </html>
