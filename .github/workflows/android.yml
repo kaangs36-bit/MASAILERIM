@@ -28,6 +28,10 @@ jobs:
           cp node_modules/pdfmake/build/vfs_fonts.js www/vfs_fonts.js
       - name: Android projesini oluştur
         run: npx cap add android
+      - name: Uygulama simgesini oluştur
+        run: |
+          npm run build:icons
+          npx capacitor-assets generate --android
       - name: APK derle
         working-directory: android
         run: ./gradlew assembleDebug
