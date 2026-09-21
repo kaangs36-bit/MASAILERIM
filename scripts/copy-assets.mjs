@@ -1,0 +1,1 @@
+import{copyFile}from'node:fs/promises';await copyFile('node_modules/pdfmake/build/pdfmake.min.js','www/pdfmake.min.js');await copyFile('node_modules/pdfmake/build/vfs_fonts.js','www/vfs_fonts.js');console.log('PDF motoru hazır.');
