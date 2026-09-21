@@ -1,31 +1,31 @@
 {
-  "name": "mrl-personel-takip",
+  "name": "mrl-hakedis",
   "version": "1.0.0",
   "private": true,
   "main": "electron-main.js",
   "scripts": {
+    "copy:assets": "node scripts/copy-assets.mjs",
     "build:icons": "node scripts/build-icons.mjs",
-    "sync": "npx cap sync android",
-    "android": "npx cap open android",
-    "build:win": "npm run build:icons && node scripts/copy-pdf.mjs && electron-builder --win --x64 --publish never"
+    "build:win": "npm run build:icons && npm run copy:assets && electron-builder --win --x64 --publish never"
   },
   "dependencies": {
-    "@capacitor/android": "^7.4.3",
-    "@capacitor/core": "^7.4.3",
-    "pdfmake": "^0.2.20"
+    "@capacitor/android": "7.4.3",
+    "@capacitor/core": "7.4.3",
+    "pdfmake": "0.2.20",
+    "xlsx": "0.18.5"
   },
   "devDependencies": {
-    "@capacitor/assets": "^3.0.5",
-    "@capacitor/cli": "^7.4.3",
-    "electron": "^37.2.6",
-    "electron-builder": "^26.0.12",
-    "sharp": "^0.34.3"
+    "@capacitor/assets": "3.0.5",
+    "@capacitor/cli": "7.4.3",
+    "electron": "37.2.6",
+    "electron-builder": "26.0.12",
+    "sharp": "0.34.3"
   },
   "build": {
-    "appId": "com.mrl.mesailerim.desktop",
-    "productName": "Mesailerim",
-    "directories": { "output": "dist" },
+    "appId": "com.mrl.hakedis",
+    "productName": "MRL Hakediş",
+    "directories": {"output": "dist"},
     "files": ["www/**/*", "electron-main.js"],
-    "win": { "target": ["portable"], "artifactName": "Mesailerim.exe", "icon": "resources/icon.png" }
+    "win": {"target": ["portable"], "artifactName": "MRL-Hakedis.exe", "icon": "resources/icon.png"}
   }
 }
