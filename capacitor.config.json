@@ -1,6 +1,1 @@
-{
-  "appId": "com.mrl.personeltakip",
-  "appName": "Mesailerim",
-  "webDir": "www",
-  "server": { "androidScheme": "https" }
-}
+{"appId":"com.mrl.santiyetakip","appName":"MRL Şantiye Takip","webDir":"www","server":{"androidScheme":"https"}}
