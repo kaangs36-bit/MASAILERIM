@@ -1,17 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Mesailerim">
-  <defs>
-    <linearGradient id="bg" x1="16" y1="8" x2="112" y2="120" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#163B5C"/>
-      <stop offset="1" stop-color="#0C2034"/>
-    </linearGradient>
-    <linearGradient id="ring" x1="30" y1="24" x2="103" y2="104" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#22D3BD"/>
-      <stop offset="1" stop-color="#109C91"/>
-    </linearGradient>
-  </defs>
-  <rect x="4" y="4" width="120" height="120" rx="30" fill="url(#bg)"/>
-  <circle cx="64" cy="64" r="39" fill="none" stroke="url(#ring)" stroke-width="8"/>
-  <path d="M64 16v13M64 99v13M16 64h13M99 64h13" stroke="#F2B84B" stroke-width="6" stroke-linecap="round"/>
-  <path d="M40 83V47c0-3 2-5 5-5 2 0 4 1 5 3l14 20 14-20c1-2 3-3 5-3 3 0 5 2 5 5v36h-10V61L68 76c-2 3-6 3-8 0L50 61v22H40Z" fill="#fff"/>
-  <circle cx="64" cy="64" r="5" fill="#F2B84B"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><defs><linearGradient id="b" x1="10" y1="8" x2="118" y2="122"><stop stop-color="#173f5f"/><stop offset="1" stop-color="#0b2236"/></linearGradient></defs><rect x="4" y="4" width="120" height="120" rx="29" fill="url(#b)"/><rect x="24" y="26" width="80" height="76" rx="13" fill="none" stroke="#1db7a7" stroke-width="8"/><path d="M39 48h50M39 66h50M39 84h30" stroke="#fff" stroke-width="7" stroke-linecap="round"/><circle cx="91" cy="85" r="13" fill="#f2b84b"/><path d="m85 85 4 4 9-10" fill="none" stroke="#102a43" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
