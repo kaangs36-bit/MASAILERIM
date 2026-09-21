@@ -1,26 +1,16 @@
-# Mesailerim
+# MRL Hakediş
 
-MRL Mobilya için Android ve Windows üzerinde çalışan personel, mesai, avans, yemek fişi, devamsızlık ve ödeme takip uygulaması.
+Android ve Windows için çevrimdışı çalışan, Supabase ile cihazlar arasında eşitlenen hakediş ve metraj uygulaması.
 
-## Telefon ve bilgisayar senkronizasyonu
+## Özellikler
 
-Uygulamanın **Ayarlar** ekranından bir bulut hesabı oluşturun. Telefon ve bilgisayarda aynı e-posta ve şifreyle giriş yaptığınızda kayıtlar Supabase üzerinden otomatik eşitlenir. İnternet yokken kayıt girmeye devam edilebilir; bağlantı geri geldiğinde bekleyen değişiklikler gönderilir.
+- Proje ve hakediş dönemleri
+- Metraj, çarşaf, icmal ve kapak hesapları
+- Önceki, bu dönem ve toplam imalat miktarları
+- KDV, ilaveler, kesintiler ve net ödeme
+- Detaylı PDF ve Excel çıktısı
+- Mevcut Excel hakedişini içe aktarma
+- JSON yedekleme
+- Telefon ve bilgisayar arasında güvenli senkronizasyon
 
-## GitHub üzerinden APK alma
-
-1. GitHub'da **Actions** sekmesine girin.
-2. **Android APK Oluştur** iş akışını açın.
-3. Tamamlanan çalışmanın **Artifacts** bölümünden `MRL-Personel-Takip-APK` dosyasını indirin.
-4. ZIP'i açın ve `app-debug.apk` dosyasını Android telefona kurun.
-
-## Windows sürümü
-
-GitHub Actions içindeki **Windows Uygulaması Oluştur** işleminin `Mesailerim-Windows` çıktısında kurulumsuz çalışan tek `Mesailerim.exe` dosyası bulunur.
-
-## Yedekleme
-
-Yerel kayıtlar cihazda da saklanır. Ayrıca Ayarlar bölümünden JSON yedeği indirilebilir ve geri yüklenebilir.
-
-## Tasarım
-
-Gece laciverti, turkuaz ve sıcak altın renk paletine sahip Mesailerim marka arayüzü; Android ve Windows için ortak uygulama simgesi kullanır.
+GitHub Actions, Android APK ve kurulumsuz Windows EXE üretir.
