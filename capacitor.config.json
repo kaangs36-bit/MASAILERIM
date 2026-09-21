@@ -1,6 +1,6 @@
 {
-  "appId": "com.mrl.personeltakip",
-  "appName": "Mesailerim",
+  "appId": "com.mrl.hakedis",
+  "appName": "MRL Hakediş",
   "webDir": "www",
-  "server": { "androidScheme": "https" }
+  "server": {"androidScheme": "https"}
 }
