@@ -1,142 +1,149 @@
 <!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#243c2f" />
-  <title>Mesailerim</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="quick.css" />
-  <link rel="stylesheet" href="sync.css" />
-  <link rel="stylesheet" href="theme.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#102a43">
+  <title>MRL Hakediş</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <div class="brand-lockup"><img src="logo.svg" alt=""><div><small>MRL MOBİLYA</small><h1>Mesailerim</h1></div></div>
-    <button class="icon" id="backupBtn" title="Yedek">⇩</button>
+    <div class="brand"><img src="logo.svg" alt=""><div><small>MRL MOBİLYA</small><h1>Hakediş</h1></div></div>
+    <div class="header-actions"><span id="cloudBadge" class="badge">Çevrimdışı</span><button class="icon" id="undoBtn" title="Son işlemi geri al">↶</button></div>
   </header>
 
   <main>
     <section id="dashboard" class="page active">
-      <div class="period"><button id="prevMonth">‹</button><strong id="periodLabel"></strong><button id="nextMonth">›</button></div>
+      <div class="hero">
+        <div><span>Toplam proje bedeli</span><b id="grandTotal">₺0</b><small id="projectCount">0 aktif proje</small></div>
+        <button class="primary" id="newProjectBtn">+ Yeni proje</button>
+      </div>
       <div class="cards">
-        <article><span>Toplam ödenecek</span><b id="totalPay">₺0</b></article>
-        <article><span>Toplam mesai</span><b id="totalOvertime">₺0</b></article>
-        <article><span>Toplam avans</span><b id="totalAdvance">₺0</b></article>
-        <article><span>Kalan ödeme</span><b id="totalRemaining">₺0</b></article>
+        <article><span>Toplam hakediş</span><b id="grossTotal">₺0</b></article>
+        <article><span>KDV toplamı</span><b id="vatTotal">₺0</b></article>
+        <article><span>Net ödeme</span><b id="netTotal">₺0</b></article>
       </div>
-      <div class="section-title"><h2>Personel ödeme özeti</h2><button class="link" data-page="employees">Personeller</button></div>
-      <div id="summaryList" class="list"></div>
+      <div class="section-head"><h2>Projeler</h2><input id="projectSearch" placeholder="Proje ara"></div>
+      <div id="projectList" class="grid-list"></div>
     </section>
 
-    <section id="employees" class="page">
-      <div class="section-title"><h2>Personeller</h2><button class="primary small" id="addEmployeeBtn">+ Personel</button></div>
-      <input class="search" id="employeeSearch" placeholder="Personel ara…" autocomplete="off">
-      <div id="employeeList" class="list"></div>
+    <section id="project" class="page">
+      <button class="back" data-page="dashboard">← Projelere dön</button>
+      <div class="project-title"><div><small id="projectEmployer"></small><h2 id="projectName"></h2><p id="projectMeta"></p></div><button class="ghost" id="editProjectBtn">Düzenle</button></div>
+      <div id="projectStats" class="cards four"></div>
+      <div class="section-head"><h2>Hakedişler</h2><button class="primary small" id="newPeriodBtn">+ Hakediş</button></div>
+      <div id="periodList" class="grid-list"></div>
+      <div class="section-head"><h2>İş kalemleri</h2><button class="ghost small" id="newItemBtn">+ İş kalemi</button></div>
+      <div id="itemList" class="list"></div>
     </section>
 
-    <section id="records" class="page">
-      <div class="section-title"><h2>Toplu günlük giriş</h2><button class="ghost small" id="addRecordBtn">Tekli giriş</button></div>
-      <div class="quick-panel">
-        <label>Tarih<input id="quickDate" type="date"></label>
-        <div class="quick-actions"><button class="mini" id="markAllPresent">Tümünü geldi yap</button><button class="mini" id="clearQuickHours">Mesaileri temizle</button></div>
-        <div class="quick-head"><span>Personel / Durum</span><span>Mesai</span><span>Avans</span><span>Yemek</span></div>
-        <div id="quickList"></div>
-        <button class="wide" id="saveQuick">Tüm personeli kaydet</button>
+    <section id="period" class="page">
+      <button class="back" data-page="project">← Projeye dön</button>
+      <div class="project-title"><div><small id="periodProject"></small><h2 id="periodTitle"></h2><p id="periodDate"></p></div><button class="ghost" id="editPeriodBtn">Düzenle</button></div>
+      <div id="periodStats" class="cards four"></div>
+      <div class="toolbar">
+        <button class="primary" id="addMeasurementBtn">+ Metraj ekle</button>
+        <button class="ghost" id="directEntryBtn">Hızlı miktar girişi</button>
       </div>
-      <div class="section-title"><h2>Kayıt geçmişi</h2></div>
-      <div class="filters"><select id="recordEmployeeFilter"></select><input id="recordMonth" type="month"></div>
-      <div id="recordList" class="list"></div>
+      <div class="section-head"><h2>İmalat ve metrajlar</h2><span class="hint">Miktarlar otomatik hesaplanır</span></div>
+      <div id="periodItems" class="list"></div>
+      <div class="summary-panel" id="paymentSummary"></div>
     </section>
 
-    <section id="movements" class="page">
-      <div class="section-title"><h2>Aylık hareketler</h2></div>
-      <div class="period"><button id="movementPrev">‹</button><strong id="movementPeriodLabel"></strong><button id="movementNext">›</button></div>
-      <button class="wide pdf-button" id="exportPdf">Detaylı aylık PDF indir</button>
-      <div id="movementTotals" class="movement-totals"></div>
-      <div id="movementList" class="list"></div>
+    <section id="reports" class="page">
+      <div class="section-head"><h2>Raporlar ve aktarma</h2></div>
+      <div class="settings-card">
+        <label>Proje<select id="reportProject"></select></label>
+        <label>Hakediş<select id="reportPeriod"></select></label>
+        <button class="wide" id="exportPdfBtn">Detaylı hakediş PDF indir</button>
+        <button class="wide secondary" id="exportExcelBtn">Excel dosyası indir</button>
+      </div>
+      <h2>Veri aktarımı</h2>
+      <div class="settings-card">
+        <label class="file-button">Mevcut hakediş Excel'ini içe aktar<input id="importExcel" type="file" accept=".xlsx,.xls"></label>
+        <button class="wide secondary" id="exportJsonBtn">JSON yedeği indir</button>
+        <label class="file-button secondary">JSON yedeğini geri yükle<input id="importJson" type="file" accept=".json"></label>
+      </div>
     </section>
 
     <section id="settings" class="page">
-      <h2>Senkronizasyon</h2>
-      <div class="settings-card sync-card">
-        <div class="sync-heading"><div><strong>Telefon ↔ Bilgisayar</strong><span id="syncStatus" class="sync-status offline">Bağlı değil</span></div><span id="syncDot" class="sync-dot"></span></div>
-        <p id="syncInfo">Aynı hesapla giriş yaptığında bütün kayıtların cihazların arasında otomatik eşitlenir.</p>
+      <h2>Telefon ve bilgisayar eşitleme</h2>
+      <div class="settings-card">
+        <div class="sync-head"><div><strong id="syncStatus">Bağlı değil</strong><small id="syncInfo">Aynı hesapla bütün cihazlarda kullan.</small></div><i id="syncDot"></i></div>
         <div id="authFields">
-          <label>E-posta<input id="syncEmail" type="email" autocomplete="email" placeholder="ornek@email.com"></label>
-          <label>Şifre<input id="syncPassword" type="password" minlength="6" autocomplete="current-password" placeholder="En az 6 karakter"></label>
-          <div class="sync-actions"><button class="ghost" id="signUpBtn">Hesap oluştur</button><button class="primary" id="signInBtn">Giriş yap</button></div>
+          <label>E-posta<input id="syncEmail" type="email" autocomplete="email"></label>
+          <label>Şifre<input id="syncPassword" type="password" minlength="6" autocomplete="current-password"></label>
+          <div class="two"><button class="ghost" id="signUpBtn">Hesap oluştur</button><button class="primary" id="signInBtn">Giriş yap</button></div>
         </div>
         <div id="signedInActions" hidden>
           <button class="wide" id="syncNowBtn">Şimdi eşitle</button>
-          <button class="ghost wide" id="signOutBtn">Hesaptan çık</button>
+          <button class="wide ghost" id="signOutBtn">Hesaptan çık</button>
         </div>
       </div>
-      <h2>Ayarlar ve yedek</h2>
-      <div class="settings-card">
-        <button class="wide" id="exportJson">JSON yedeği indir</button>
-        <label class="wide file">JSON yedeğini geri yükle<input id="importJson" type="file" accept="application/json"></label>
-        <button class="wide" id="exportCsv">Aylık özeti CSV indir</button>
-        <p>Veriler bu telefonda çevrimdışı saklanır. Uygulamayı silmeden veya telefon değiştirmeden önce yedek alın.</p>
-      </div>
+      <h2>Uygulama bilgisi</h2>
+      <div class="settings-card about"><img src="logo.svg" alt=""><div><b>MRL Hakediş v1.0</b><p>Veriler cihazda çevrimdışı saklanır ve giriş yapıldığında güvenli biçimde eşitlenir.</p></div></div>
     </section>
   </main>
 
   <nav>
-    <button class="active" data-page="dashboard"><span>⌂</span>Özet</button>
-    <button data-page="employees"><span>♙</span>Personel</button>
-    <button data-page="records"><span>＋</span>Kayıtlar</button>
-    <button data-page="movements"><span>▤</span>Hareketler</button>
+    <button class="active" data-page="dashboard"><span>⌂</span>Projeler</button>
+    <button data-page="reports"><span>▤</span>Raporlar</button>
     <button data-page="settings"><span>⚙</span>Ayarlar</button>
   </nav>
 
-  <dialog id="employeeDialog">
-    <form id="employeeForm" method="dialog">
-      <h3 id="employeeDialogTitle">Personel ekle</h3>
-      <input type="hidden" id="employeeId">
-      <label>Ad soyad<input id="employeeName" required></label>
-      <label>Aylık maaş<input id="employeeSalary" type="number" min="0" step="0.01" required></label>
-      <label>Aylık normal çalışma saati<input id="employeeHours" type="number" min="1" value="300" required></label>
-      <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
-    </form>
-  </dialog>
+  <dialog id="projectDialog"><form id="projectForm">
+    <h3 id="projectDialogTitle">Proje</h3><input type="hidden" id="projectId">
+    <label>Proje adı<input id="pName" required></label>
+    <label>İşveren<input id="pEmployer" required></label>
+    <label>Taşeron<input id="pContractor" value="MERAL MOBİLYA" required></label>
+    <label>İşin tanımı<input id="pWorkName" value="BAKIM ONARIM TADİLAT VE İMALAT"></label>
+    <div class="two"><label>Sözleşme tarihi<input id="pContractDate" type="date"></label><label>Yer teslim tarihi<input id="pDeliveryDate" type="date"></label></div>
+    <label>Süre sonu tarihi<input id="pEndDate" type="date"></label>
+    <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary">Kaydet</button></div>
+  </form></dialog>
 
-  <dialog id="recordDialog">
-    <form id="recordForm" method="dialog">
-      <h3 id="recordDialogTitle">Günlük kayıt ekle</h3>
-      <input type="hidden" id="recordId">
-      <label>Personel<select id="recordEmployee" required></select></label>
-      <label>Tarih<input id="recordDate" type="date" required></label>
-      <label>Çalışma durumu<select id="recordStatus"><option value="present">Geldi</option><option value="absent">Gelmedi</option><option value="paid_leave">Ücretli izin</option><option value="unpaid_leave">Ücretsiz izin</option><option value="sick">Raporlu</option><option value="weekly_off">Hafta tatili</option></select></label>
-      <label>Mesai saati<input id="recordOvertimeHours" type="number" min="0" step="0.5" value="0"></label>
-      <label>Avans<input id="recordAdvance" type="number" min="0" step="0.01" value="0"></label>
-      <label>Yemek fişi<input id="recordMeal" type="number" min="0" step="0.01" value="0"></label>
-      <label>Not<input id="recordNote"></label>
-      <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
-    </form>
-  </dialog>
+  <dialog id="itemDialog"><form id="itemForm">
+    <h3>İş kalemi</h3><input type="hidden" id="itemId">
+    <label>İş grubu / mahal<input id="itemGroup" placeholder="NİYAZİ SAYIN KÜLTÜR MERKEZİ" required></label>
+    <label>Poz no<input id="itemCode"></label>
+    <label>İşin cinsi<input id="itemName" required></label>
+    <div class="two"><label>Birim<select id="itemUnit"><option>M2</option><option>MT</option><option>M</option><option>AD</option><option>KG</option><option>TAKIM</option><option>GÜN</option></select></label><label>Birim fiyat<input id="itemPrice" type="number" min="0" step="0.01" required></label></div>
+    <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary">Kaydet</button></div>
+  </form></dialog>
 
-  <dialog id="detailDialog">
-    <div class="dialog-body">
-      <div class="detail-head"><div><small>AYLIK PERSONEL DÖKÜMÜ</small><h3 id="detailName"></h3></div><button class="icon dark close">×</button></div>
-      <div id="detailContent"></div>
-    </div>
-  </dialog>
+  <dialog id="periodDialog"><form id="periodForm">
+    <h3>Hakediş bilgileri</h3><input type="hidden" id="periodId">
+    <div class="two"><label>Hakediş no<input id="hNo" type="number" min="1" required></label><label>Hakediş tarihi<input id="hDate" type="date" required></label></div>
+    <div class="two"><label>KDV oranı (%)<input id="hVat" type="number" min="0" step="0.01" value="20"></label><label>İhale indirimi (%)<input id="hDiscount" type="number" min="0" max="100" step="0.01" value="0"></label></div>
+    <label>Sözleşme fiyat farkı<input id="hPriceDiff" type="number" step="0.01" value="0"></label>
+    <label>İlave işler<input id="hExtra" type="number" step="0.01" value="0"></label>
+    <label>Teminat kesintisi iadesi<input id="hRetention" type="number" step="0.01" value="0"></label>
+    <label>Kesintiler ve mahsuplar<input id="hDeductions" type="number" min="0" step="0.01" value="0"></label>
+    <label>Kesinti açıklaması<input id="hDeductionNote"></label>
+    <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary">Kaydet</button></div>
+  </form></dialog>
 
-  <dialog id="paymentDialog">
-    <form id="paymentForm" method="dialog">
-      <h3>Yapılan ödeme</h3>
-      <input type="hidden" id="paymentEmployeeId">
-      <p id="paymentPerson"></p>
-      <label>Ödenen tutar<input id="paymentAmount" type="number" min="0" step="0.01" required></label>
-      <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
-    </form>
-  </dialog>
+  <dialog id="measurementDialog"><form id="measurementForm">
+    <h3>Metraj ekle</h3><input type="hidden" id="measurementId">
+    <label>İş kalemi<select id="mItem" required></select></label>
+    <label>Bölüm / mahal<input id="mSection"></label>
+    <label>Açıklama<input id="mDescription"></label>
+    <div class="measure-grid"><label>Adet<input id="mCount" type="number" step="0.001" value="1"></label><label>En<input id="mWidth" type="number" step="0.001" value="1"></label><label>Boy<input id="mLength" type="number" step="0.001" value="1"></label><label>Yükseklik<input id="mHeight" type="number" step="0.001" value="1"></label></div>
+    <label>Çarpan<input id="mFactor" type="number" step="0.001" value="1"></label>
+    <label class="check"><input id="mManualEnabled" type="checkbox"> Hesap yerine doğrudan miktar kullan</label>
+    <label>Doğrudan miktar<input id="mManual" type="number" step="0.001" value="0"></label>
+    <div class="calc-preview">Hesaplanan miktar: <b id="mPreview">1</b></div>
+    <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary">Kaydet</button></div>
+  </form></dialog>
+
+  <dialog id="directDialog"><form id="directForm">
+    <h3>Hızlı miktar girişi</h3><p class="muted">Bu hakedişte yapılan miktarları doğrudan yaz.</p><div id="directList"></div>
+    <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary">Tümünü kaydet</button></div>
+  </form></dialog>
 
   <div id="toast"></div>
-  <script src="pdfmake.min.js"></script>
-  <script src="vfs_fonts.js"></script>
-  <script src="app.js"></script>
-  <script src="sync.js"></script>
+  <script src="pdfmake.min.js"></script><script src="vfs_fonts.js"></script><script src="xlsx.full.min.js"></script>
+  <script src="app.js"></script><script src="sync.js"></script>
 </body>
 </html>
