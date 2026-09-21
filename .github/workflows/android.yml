@@ -1,43 +1,26 @@
-name: Android APK Oluştur
-
+name: MRL Şantiye Takip APK
 on:
   workflow_dispatch:
   push:
-    branches: [main, master]
-
+    branches: [mrl-santiye-takip]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Projeyi al
-        uses: actions/checkout@v4
-      - name: Node.js kur
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - name: Java kur
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 21
-      - name: Paketleri kur
-        run: npm install
-      - name: PDF motorunu uygulamaya ekle
-        run: |
-          cp node_modules/pdfmake/build/pdfmake.min.js www/pdfmake.min.js
-          cp node_modules/pdfmake/build/vfs_fonts.js www/vfs_fonts.js
-      - name: Android projesini oluştur
-        run: npx cap add android
-      - name: Uygulama simgesini oluştur
-        run: |
-          npm run build:icons
-          npx capacitor-assets generate --android
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: 21}
+      - run: npm ci
+      - run: npm run copy:assets
+      - run: npx cap add android
+      - run: npm run build:icons && npx capacitor-assets generate --android
       - name: APK derle
         working-directory: android
         run: ./gradlew assembleDebug
-      - name: APK dosyasını yükle
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: MRL-Personel-Takip-APK
+          name: MRL-Santiye-Takip-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
