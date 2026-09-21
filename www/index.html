@@ -1,142 +1,21 @@
-<!doctype html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#243c2f" />
-  <title>Mesailerim</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="quick.css" />
-  <link rel="stylesheet" href="sync.css" />
-  <link rel="stylesheet" href="theme.css" />
-</head>
-<body>
-  <header>
-    <div class="brand-lockup"><img src="logo.svg" alt=""><div><small>MRL MOBİLYA</small><h1>Mesailerim</h1></div></div>
-    <button class="icon" id="backupBtn" title="Yedek">⇩</button>
-  </header>
-
-  <main>
-    <section id="dashboard" class="page active">
-      <div class="period"><button id="prevMonth">‹</button><strong id="periodLabel"></strong><button id="nextMonth">›</button></div>
-      <div class="cards">
-        <article><span>Toplam ödenecek</span><b id="totalPay">₺0</b></article>
-        <article><span>Toplam mesai</span><b id="totalOvertime">₺0</b></article>
-        <article><span>Toplam avans</span><b id="totalAdvance">₺0</b></article>
-        <article><span>Kalan ödeme</span><b id="totalRemaining">₺0</b></article>
-      </div>
-      <div class="section-title"><h2>Personel ödeme özeti</h2><button class="link" data-page="employees">Personeller</button></div>
-      <div id="summaryList" class="list"></div>
-    </section>
-
-    <section id="employees" class="page">
-      <div class="section-title"><h2>Personeller</h2><button class="primary small" id="addEmployeeBtn">+ Personel</button></div>
-      <input class="search" id="employeeSearch" placeholder="Personel ara…" autocomplete="off">
-      <div id="employeeList" class="list"></div>
-    </section>
-
-    <section id="records" class="page">
-      <div class="section-title"><h2>Toplu günlük giriş</h2><button class="ghost small" id="addRecordBtn">Tekli giriş</button></div>
-      <div class="quick-panel">
-        <label>Tarih<input id="quickDate" type="date"></label>
-        <div class="quick-actions"><button class="mini" id="markAllPresent">Tümünü geldi yap</button><button class="mini" id="clearQuickHours">Mesaileri temizle</button></div>
-        <div class="quick-head"><span>Personel / Durum</span><span>Mesai</span><span>Avans</span><span>Yemek</span></div>
-        <div id="quickList"></div>
-        <button class="wide" id="saveQuick">Tüm personeli kaydet</button>
-      </div>
-      <div class="section-title"><h2>Kayıt geçmişi</h2></div>
-      <div class="filters"><select id="recordEmployeeFilter"></select><input id="recordMonth" type="month"></div>
-      <div id="recordList" class="list"></div>
-    </section>
-
-    <section id="movements" class="page">
-      <div class="section-title"><h2>Aylık hareketler</h2></div>
-      <div class="period"><button id="movementPrev">‹</button><strong id="movementPeriodLabel"></strong><button id="movementNext">›</button></div>
-      <button class="wide pdf-button" id="exportPdf">Detaylı aylık PDF indir</button>
-      <div id="movementTotals" class="movement-totals"></div>
-      <div id="movementList" class="list"></div>
-    </section>
-
-    <section id="settings" class="page">
-      <h2>Senkronizasyon</h2>
-      <div class="settings-card sync-card">
-        <div class="sync-heading"><div><strong>Telefon ↔ Bilgisayar</strong><span id="syncStatus" class="sync-status offline">Bağlı değil</span></div><span id="syncDot" class="sync-dot"></span></div>
-        <p id="syncInfo">Aynı hesapla giriş yaptığında bütün kayıtların cihazların arasında otomatik eşitlenir.</p>
-        <div id="authFields">
-          <label>E-posta<input id="syncEmail" type="email" autocomplete="email" placeholder="ornek@email.com"></label>
-          <label>Şifre<input id="syncPassword" type="password" minlength="6" autocomplete="current-password" placeholder="En az 6 karakter"></label>
-          <div class="sync-actions"><button class="ghost" id="signUpBtn">Hesap oluştur</button><button class="primary" id="signInBtn">Giriş yap</button></div>
-        </div>
-        <div id="signedInActions" hidden>
-          <button class="wide" id="syncNowBtn">Şimdi eşitle</button>
-          <button class="ghost wide" id="signOutBtn">Hesaptan çık</button>
-        </div>
-      </div>
-      <h2>Ayarlar ve yedek</h2>
-      <div class="settings-card">
-        <button class="wide" id="exportJson">JSON yedeği indir</button>
-        <label class="wide file">JSON yedeğini geri yükle<input id="importJson" type="file" accept="application/json"></label>
-        <button class="wide" id="exportCsv">Aylık özeti CSV indir</button>
-        <p>Veriler bu telefonda çevrimdışı saklanır. Uygulamayı silmeden veya telefon değiştirmeden önce yedek alın.</p>
-      </div>
-    </section>
-  </main>
-
-  <nav>
-    <button class="active" data-page="dashboard"><span>⌂</span>Özet</button>
-    <button data-page="employees"><span>♙</span>Personel</button>
-    <button data-page="records"><span>＋</span>Kayıtlar</button>
-    <button data-page="movements"><span>▤</span>Hareketler</button>
-    <button data-page="settings"><span>⚙</span>Ayarlar</button>
-  </nav>
-
-  <dialog id="employeeDialog">
-    <form id="employeeForm" method="dialog">
-      <h3 id="employeeDialogTitle">Personel ekle</h3>
-      <input type="hidden" id="employeeId">
-      <label>Ad soyad<input id="employeeName" required></label>
-      <label>Aylık maaş<input id="employeeSalary" type="number" min="0" step="0.01" required></label>
-      <label>Aylık normal çalışma saati<input id="employeeHours" type="number" min="1" value="300" required></label>
-      <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
-    </form>
-  </dialog>
-
-  <dialog id="recordDialog">
-    <form id="recordForm" method="dialog">
-      <h3 id="recordDialogTitle">Günlük kayıt ekle</h3>
-      <input type="hidden" id="recordId">
-      <label>Personel<select id="recordEmployee" required></select></label>
-      <label>Tarih<input id="recordDate" type="date" required></label>
-      <label>Çalışma durumu<select id="recordStatus"><option value="present">Geldi</option><option value="absent">Gelmedi</option><option value="paid_leave">Ücretli izin</option><option value="unpaid_leave">Ücretsiz izin</option><option value="sick">Raporlu</option><option value="weekly_off">Hafta tatili</option></select></label>
-      <label>Mesai saati<input id="recordOvertimeHours" type="number" min="0" step="0.5" value="0"></label>
-      <label>Avans<input id="recordAdvance" type="number" min="0" step="0.01" value="0"></label>
-      <label>Yemek fişi<input id="recordMeal" type="number" min="0" step="0.01" value="0"></label>
-      <label>Not<input id="recordNote"></label>
-      <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
-    </form>
-  </dialog>
-
-  <dialog id="detailDialog">
-    <div class="dialog-body">
-      <div class="detail-head"><div><small>AYLIK PERSONEL DÖKÜMÜ</small><h3 id="detailName"></h3></div><button class="icon dark close">×</button></div>
-      <div id="detailContent"></div>
-    </div>
-  </dialog>
-
-  <dialog id="paymentDialog">
-    <form id="paymentForm" method="dialog">
-      <h3>Yapılan ödeme</h3>
-      <input type="hidden" id="paymentEmployeeId">
-      <p id="paymentPerson"></p>
-      <label>Ödenen tutar<input id="paymentAmount" type="number" min="0" step="0.01" required></label>
-      <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
-    </form>
-  </dialog>
-
-  <div id="toast"></div>
-  <script src="pdfmake.min.js"></script>
-  <script src="vfs_fonts.js"></script>
-  <script src="app.js"></script>
-  <script src="sync.js"></script>
-</body>
-</html>
+<!doctype html><html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080e14"><title>MRL Şantiye Takip</title><link rel="stylesheet" href="style.css"></head><body>
+<section id="login" class="auth-screen"><div class="auth-photo"></div><div class="auth-card"><img src="logo.svg"><h1>MRL ŞANTİYE TAKİP</h1><p>Şantiyeleriniz her zaman elinizin altında</p><h2>Hoş geldiniz</h2><label>E-posta<input id="email" type="email"></label><label>Şifre<input id="password" type="password"></label><button id="loginBtn" class="gold">GİRİŞ YAP</button><button id="signupBtn" class="outline">HESAP OLUŞTUR</button><small id="authMsg"></small></div></section>
+<section id="setup" class="auth-screen hidden"><div class="auth-card setup"><img src="logo.svg"><h2>Şirket bağlantısı</h2><p>İlk yöneticiysen şirketi oluştur; ekip üyesiysen davet koduyla katıl.</p><label>Adınız<input id="setupName"></label><label>Şirket adı<input id="companyName" value="MRL Mobilya"></label><button id="createCompany" class="gold">ŞİRKETİ OLUŞTUR</button><div class="or">veya</div><label>Davet kodu<input id="inviteCode"></label><button id="joinCompany" class="outline">DAVET KODUYLA KATIL</button></div></section>
+<div id="app" class="hidden"><header><button id="menuBtn" class="icon">☰</button><div class="brand"><img src="logo.svg"><div><b>MRL ŞANTİYE TAKİP</b><small id="roleLabel"></small></div></div><div><span id="syncBadge">Çevrimdışı</span><button id="logoutBtn" class="icon">⏻</button></div></header>
+<main>
+<section id="home" class="page active"><div class="welcome"><div><small>HOŞ GELDİNİZ</small><h2 id="welcomeName">MRL Ekibi</h2></div><span id="todayText"></span></div><div id="summaryCards" class="stats"></div><h3>Kısa yollar</h3><div id="quick" class="quick"></div><div class="section-title"><h3>Son iş kayıtları</h3><button data-page="records">Tümü</button></div><div id="recentRecords" class="list"></div></section>
+<section id="sites" class="page"><div class="title"><div><h2>Şantiyeler</h2><p>Aktif ve tamamlanan projeler</p></div><button id="addSite" class="gold admin">+ Şantiye</button></div><div class="tabs"><button class="active" data-site-filter="active">Aktif</button><button data-site-filter="archived">Arşiv</button></div><div id="siteList" class="list"></div></section>
+<section id="siteDetail" class="page"><button class="back" data-page="sites">← Şantiyeler</button><div id="siteHero"></div><div class="section-title"><h3>Mahal yapısı</h3><button id="addLocation" class="admin">+ Mahal</button></div><div id="locationTree" class="tree"></div><h3>Şantiye kayıtları</h3><div id="siteRecords" class="list"></div></section>
+<section id="records" class="page"><div class="title"><div><h2>İş Kayıtları</h2><p>Yapılan işler ve kontrol süreci</p></div><button id="addRecord" class="gold">+ Yeni Kayıt</button></div><div class="filters"><select id="recordSiteFilter"></select><select id="recordStatusFilter"><option value="">Tüm durumlar</option><option>Kontrol Bekliyor</option><option>Düzeltme İstendi</option><option>Tekrar Kontrolde</option><option>Onaylandı</option></select></div><div id="recordList" class="list"></div></section>
+<section id="recordDetail" class="page"><button class="back" data-page="records">← İş kayıtları</button><div id="recordDetailBody"></div></section>
+<section id="review" class="page"><div class="title"><div><h2>Kontrol Merkezi</h2><p>Bekleyen ve düzeltmedeki işler</p></div></div><div id="reviewList" class="list"></div></section>
+<section id="reports" class="page"><div class="title"><div><h2>Gün Sonu Raporu</h2><p id="reportDate"></p></div><button id="pdfBtn" class="gold admin">PDF Oluştur</button></div><div id="reportStats" class="stats"></div><h3>Şantiye dağılımı</h3><div id="reportSites" class="panel"></div><h3>Usta performansı</h3><div id="reportWorkers" class="panel"></div></section>
+<section id="team" class="page"><div class="title"><div><h2>Çalışanlar</h2><p>Roller ve kişi bazlı yetkiler</p></div></div><div class="invite admin"><small>Şirket davet kodu</small><b id="inviteDisplay"></b></div><div id="teamList" class="list"></div></section>
+<section id="settings" class="page"><h2>Ayarlar</h2><div class="panel"><h3>İş türleri</h3><div id="workTypeList"></div><button id="addWorkType" class="outline admin">+ İş türü ekle</button></div><div class="panel"><h3>Senkronizasyon</h3><p>İnternet yokken kayıtlar bu telefonda tutulur. Bağlantı geldiğinde otomatik eşitlenir.</p><button id="syncNow" class="gold">Şimdi eşitle</button></div></section>
+</main><nav><button data-page="home" class="active">⌂<span>Ana Sayfa</span></button><button data-page="sites">▥<span>Şantiyeler</span></button><button data-page="records" class="plus">＋<span>Yeni Kayıt</span></button><button data-page="review">✓<span>Kontrol</span></button><button data-page="reports">▤<span>Raporlar</span></button></nav></div>
+<dialog id="siteDialog"><form id="siteForm"><h3>Şantiye</h3><input id="siteId" type="hidden"><label>Şantiye adı<input id="siteName" required></label><label>Konum<input id="siteAddress"></label><label>Başlangıç<input id="siteStart" type="date"></label><label>Tahmini bitiş<input id="siteEnd" type="date"></label><div class="actions"><button type="button" class="close">Vazgeç</button><button class="gold">Kaydet</button></div></form></dialog>
+<dialog id="locationDialog"><form id="locationForm"><h3>Mahal ekle</h3><label>Üst mahal<select id="locationParent"></select></label><label>Mahal adı<input id="locationName" placeholder="A Blok / 3. Kat / Mutfak" required></label><div class="actions"><button type="button" class="close">Vazgeç</button><button class="gold">Ekle</button></div></form></dialog>
+<dialog id="recordDialog"><form id="recordForm"><h3>Yeni İş Kaydı</h3><input id="recordId" type="hidden"><label>Şantiye<select id="rSite" required></select></label><label>Mahal<select id="rLocation" required></select></label><label>İş türü<select id="rWork" required></select></label><div class="two"><label>Miktar<input id="rQty" type="number" step="0.01" required></label><label>Birim<input id="rUnit" readonly></label></div><div class="two"><label>Malzeme<input id="rMaterial"></label><label>Renk / Kod<input id="rColor"></label></div><label>Kalınlık<input id="rThickness"></label><label>Açıklama<textarea id="rNote"></textarea></label><label class="photo-input">📷 Fotoğraf ekle<input id="rPhotos" type="file" accept="image/*" capture="environment" multiple></label><div id="photoPreview" class="photos"></div><div class="actions"><button type="button" class="close">Vazgeç</button><button class="gold">Kontrole Gönder</button></div></form></dialog>
+<dialog id="correctionDialog"><form id="correctionForm"><h3>Düzeltme iste</h3><label>Açıklama<textarea id="correctionText" required placeholder="Yapılması gereken düzeltmeyi yazın"></textarea></label><div class="actions"><button type="button" class="close">Vazgeç</button><button class="danger">Düzeltme Gönder</button></div></form></dialog>
+<dialog id="workDialog"><form id="workForm"><h3>İş türü ekle</h3><label>İş adı<input id="workName" required></label><label>Ölçü birimi<select id="workUnit"><option>m²</option><option>mt</option><option>adet</option></select></label><div class="actions"><button type="button" class="close">Vazgeç</button><button class="gold">Ekle</button></div></form></dialog>
+<div id="toast"></div><script src="pdfmake.min.js"></script><script src="vfs_fonts.js"></script><script src="app.js"></script><script src="sync.js"></script></body></html>
