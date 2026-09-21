@@ -1,27 +1,19 @@
-name: Windows Uygulaması Oluştur
-
+name: Windows EXE Oluştur
 on:
   workflow_dispatch:
   push:
-    branches: [main, master]
-
+    branches: [mrl-hakedis]
 jobs:
-  build-windows:
+  build:
     runs-on: windows-latest
     steps:
-      - name: Projeyi al
-        uses: actions/checkout@v4
-      - name: Node.js kur
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22}
+      - run: npm install
+      - run: npm run build:win
+      - uses: actions/upload-artifact@v4
         with:
-          node-version: 22
-      - name: Paketleri kur
-        run: npm install
-      - name: Windows uygulamasını oluştur
-        run: npm run build:win
-      - name: Windows dosyalarını yükle
-        uses: actions/upload-artifact@v4
-        with:
-          name: Mesailerim-Windows
-          path: dist/Mesailerim.exe
+          name: MRL-Hakedis-Windows
+          path: dist/MRL-Hakedis.exe
           retention-days: 30
