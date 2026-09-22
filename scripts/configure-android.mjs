@@ -1,0 +1,10 @@
+import{readFile,writeFile}from'node:fs/promises';
+const manifest='android/app/src/main/AndroidManifest.xml';
+let xml=await readFile(manifest,'utf8');
+if(!xml.includes('ACCESS_FINE_LOCATION'))xml=xml.replace('<uses-permission android:name="android.permission.INTERNET" />','<uses-permission android:name="android.permission.INTERNET" />\n    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />\n    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />');
+await writeFile(manifest,xml);
+const gradle='android/app/build.gradle';
+let build=await readFile(gradle,'utf8');
+build=build.replace(/versionCode\s+\d+/,'versionCode 13').replace(/versionName\s+"[^"]+"/,'versionName "1.3.0"');
+await writeFile(gradle,build);
+console.log('Android konum izinleri ve sürüm bilgisi hazır.');

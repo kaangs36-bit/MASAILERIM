@@ -15,6 +15,7 @@ jobs:
       - run: npm ci
       - run: npm run copy:assets
       - run: npx cap add android
+      - run: npm run configure:android
       - run: npm run build:icons && npx capacitor-assets generate --android
       - name: APK derle
         working-directory: android
