@@ -5,6 +5,6 @@ if(!xml.includes('ACCESS_FINE_LOCATION'))xml=xml.replace('<uses-permission andro
 await writeFile(manifest,xml);
 const gradle='android/app/build.gradle';
 let build=await readFile(gradle,'utf8');
-build=build.replace(/versionCode\s+\d+/,'versionCode 13').replace(/versionName\s+"[^"]+"/,'versionName "1.3.0"');
+build=build.replace(/versionCode\s+\d+/,'versionCode 14').replace(/versionName\s+"[^"]+"/,'versionName "1.4.0"');
 await writeFile(gradle,build);
 console.log('Android konum izinleri ve sürüm bilgisi hazır.');

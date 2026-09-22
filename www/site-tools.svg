@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420">
+ <defs><linearGradient id="y" x1="0" x2="1"><stop stop-color="#ffd968"/><stop offset="1" stop-color="#f5a623"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="12" stdDeviation="10" flood-opacity=".18"/></filter></defs>
+ <g opacity=".16" stroke="#fff" stroke-width="3" fill="none"><path d="M30 340H770M100 340V160l90-60 90 60v180M520 340V90h150v250M540 130h110M540 180h110M540 230h110"/><path d="M20 280h760" stroke-dasharray="10 12"/></g>
+ <g filter="url(#s)">
+  <path d="M116 238c0-69 45-122 110-122s110 53 110 122z" fill="url(#y)"/><path d="M102 238h248c16 0 16 27 0 27H102c-16 0-16-27 0-27z" fill="#ffcf49"/><path d="M208 118v116" stroke="#e09121" stroke-width="11"/><path d="M151 145c20-22 46-29 58-29" stroke="#ffeaa2" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <g transform="translate(392 115) rotate(-12)"><path d="M0 60h132c23 0 42 19 42 42v22H59L22 96H0z" fill="#f47b32"/><rect x="54" y="106" width="54" height="102" rx="16" fill="#264e5a"/><rect x="61" y="151" width="40" height="49" rx="8" fill="#176b75"/><path d="M172 92h68v22h-68" fill="#dce7e5"/><path d="M235 96h54v14h-54" fill="#ffd766"/><circle cx="38" cy="86" r="19" fill="#fff0d1"/></g>
+  <g transform="translate(303 292)"><rect width="184" height="65" rx="17" fill="#fff"/><path d="M26 14v37M48 14v21M70 14v37M92 14v21M114 14v37M136 14v21M158 14v37" stroke="#176b75" stroke-width="5"/><circle cx="26" cy="14" r="6" fill="#f47b32"/></g>
+ </g>
+ <g fill="#fff" font-family="Arial,sans-serif"><text x="400" y="392" text-anchor="middle" font-size="20" font-weight="700" letter-spacing="4">SAHA • MOBİLYA • KONTROL</text></g>
+</svg>
