@@ -83,7 +83,7 @@
   function applyRemote(row){
     if(!row||!row.data||!Array.isArray(row.data.employees)||!Array.isArray(row.data.records))return false;
     applying=true;
-    db={employees:row.data.employees,records:row.data.records,payments:Array.isArray(row.data.payments)?row.data.payments:[]};
+    db={...row.data,employees:row.data.employees,records:row.data.records,payments:Array.isArray(row.data.payments)?row.data.payments:[],trash:Array.isArray(row.data.trash)?row.data.trash:[],undo:Array.isArray(row.data.undo)?row.data.undo:[],audit:Array.isArray(row.data.audit)?row.data.audit:[]};
     persist();
     applying=false;
     lastRemoteAt=row.updated_at||'';
