@@ -9,15 +9,17 @@
   <link rel="stylesheet" href="quick.css" />
   <link rel="stylesheet" href="sync.css" />
   <link rel="stylesheet" href="theme.css" />
+  <link rel="stylesheet" href="v2.css" />
 </head>
 <body>
   <header>
     <div class="brand-lockup"><img src="logo.svg" alt=""><div><small>MRL MOBİLYA</small><h1>Mesailerim</h1></div></div>
-    <button class="icon" id="backupBtn" title="Yedek">⇩</button>
+    <div class="header-actions"><button class="icon" id="undoBtn" title="Son işlemi geri al">↶</button><button class="icon" id="backupBtn" title="Yedek">⇩</button></div>
   </header>
 
   <main>
     <section id="dashboard" class="page active">
+      <div class="today-hero"><div><small>BUGÜNÜN PERSONEL KAYDI</small><h2 id="todayHeroDate"></h2><p id="todayHeroInfo"></p></div><button class="primary" id="goToday">Hızlı giriş →</button></div>
       <div class="period"><button id="prevMonth">‹</button><strong id="periodLabel"></strong><button id="nextMonth">›</button></div>
       <div class="cards">
         <article><span>Toplam ödenecek</span><b id="totalPay">₺0</b></article>
@@ -39,7 +41,8 @@
       <div class="section-title"><h2>Toplu günlük giriş</h2><button class="ghost small" id="addRecordBtn">Tekli giriş</button></div>
       <div class="quick-panel">
         <label>Tarih<input id="quickDate" type="date"></label>
-        <div class="quick-actions"><button class="mini" id="markAllPresent">Tümünü geldi yap</button><button class="mini" id="clearQuickHours">Mesaileri temizle</button></div>
+        <div class="quick-actions"><button class="mini" id="markAllPresent">Tümünü geldi yap</button><button class="mini" id="copyYesterday">Dünü kopyala</button><button class="mini" id="copySaturday">Son cumartesiyi kopyala</button><button class="mini" id="clearQuickHours">Mesaileri temizle</button></div>
+        <div class="batch-bar"><label><input id="selectAllQuick" type="checkbox"> Tümünü seç</label><button class="mini batch-status" data-status="present">Geldi</button><button class="mini batch-status" data-status="absent">Gelmedi</button><button class="mini batch-status" data-status="paid_leave">İzinli</button><button class="mini batch-hours" data-hours="1">+1 sa.</button><button class="mini batch-hours" data-hours="2">+2 sa.</button><button class="mini batch-hours" data-hours="3">+3 sa.</button></div>
         <div class="quick-head"><span>Personel / Durum</span><span>Mesai</span><span>Avans</span><span>Yemek</span></div>
         <div id="quickList"></div>
         <button class="wide" id="saveQuick">Tüm personeli kaydet</button>
@@ -55,6 +58,19 @@
       <button class="wide pdf-button" id="exportPdf">Detaylı aylık PDF indir</button>
       <div id="movementTotals" class="movement-totals"></div>
       <div id="movementList" class="list"></div>
+    </section>
+
+    <section id="reports" class="page">
+      <div class="section-title"><div><h2>Rapor Merkezi</h2><p class="meta">PDF ve Excel çıktıları</p></div></div>
+      <div class="report-grid">
+        <button id="reportPayrollPdf"><b>▤</b><span>Aylık ödeme PDF</span></button>
+        <button id="reportPayrollExcel"><b>▦</b><span>Aylık ödeme Excel</span></button>
+        <button id="reportAttendancePdf"><b>✓</b><span>Puantaj PDF</span></button>
+        <button id="reportAttendanceExcel"><b>▦</b><span>Puantaj Excel</span></button>
+        <button id="reportOvertimePdf"><b>⏱</b><span>Mesai PDF</span></button>
+        <button id="reportAbsencePdf"><b>!</b><span>Devamsızlık PDF</span></button>
+      </div>
+      <div class="settings-card"><h3>Silinen Kayıtlar</h3><p>Yanlışlıkla silinen personel veya günlük kayıtlar buradan geri alınabilir.</p><div id="trashList"></div></div>
     </section>
 
     <section id="settings" class="page">
@@ -87,6 +103,7 @@
     <button data-page="employees"><span>♙</span>Personel</button>
     <button data-page="records"><span>＋</span>Kayıtlar</button>
     <button data-page="movements"><span>▤</span>Hareketler</button>
+    <button data-page="reports"><span>▦</span>Raporlar</button>
     <button data-page="settings"><span>⚙</span>Ayarlar</button>
   </nav>
 
@@ -107,7 +124,7 @@
       <input type="hidden" id="recordId">
       <label>Personel<select id="recordEmployee" required></select></label>
       <label>Tarih<input id="recordDate" type="date" required></label>
-      <label>Çalışma durumu<select id="recordStatus"><option value="present">Geldi</option><option value="absent">Gelmedi</option><option value="paid_leave">Ücretli izin</option><option value="unpaid_leave">Ücretsiz izin</option><option value="sick">Raporlu</option><option value="weekly_off">Hafta tatili</option></select></label>
+      <label>Çalışma durumu<select id="recordStatus"><option value="present">Geldi</option><option value="half_day">Yarım gün</option><option value="absent">Gelmedi</option><option value="paid_leave">Ücretli izin</option><option value="unpaid_leave">Ücretsiz izin</option><option value="sick">Raporlu</option><option value="weekly_off">Hafta tatili</option></select></label>
       <label>Mesai saati<input id="recordOvertimeHours" type="number" min="0" step="0.5" value="0"></label>
       <label>Avans<input id="recordAdvance" type="number" min="0" step="0.01" value="0"></label>
       <label>Yemek fişi<input id="recordMeal" type="number" min="0" step="0.01" value="0"></label>
@@ -129,6 +146,7 @@
       <input type="hidden" id="paymentEmployeeId">
       <p id="paymentPerson"></p>
       <label>Ödenen tutar<input id="paymentAmount" type="number" min="0" step="0.01" required></label>
+      <div class="payment-shortcuts"><button type="button" class="mini" id="payFull">Tamamını öde</button><button type="button" class="mini" id="payNone">Ödeme bekliyor</button></div>
       <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
     </form>
   </dialog>
@@ -137,6 +155,7 @@
   <script src="pdfmake.min.js"></script>
   <script src="vfs_fonts.js"></script>
   <script src="app.js"></script>
+  <script src="app-v2.js"></script>
   <script src="sync.js"></script>
 </body>
 </html>
