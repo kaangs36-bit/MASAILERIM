@@ -24,8 +24,20 @@
   "build": {
     "appId": "com.mrl.mesailerim.desktop",
     "productName": "Mesailerim",
-    "directories": { "output": "dist" },
-    "files": ["www/**/*", "electron-main.js"],
-    "win": { "target": ["portable"], "artifactName": "Mesailerim.exe", "icon": "resources/icon.png" }
-  }
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "www/**/*",
+      "electron-main.js"
+    ],
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "artifactName": "Mesailerim.exe",
+      "icon": "resources/icon.png"
+    }
+  },
+  "buildNumber": "2026.11.19.1"
 }
