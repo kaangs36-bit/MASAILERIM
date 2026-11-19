@@ -1,17 +1,28 @@
 (()=>{
 'use strict';
-const APP_VERSION='3.0.2',REPO='kaangs36-bit/MASAILERIM',today=()=>new Date().toISOString().slice(0,10),month=x=>String(x||today()).slice(0,7),n=x=>Number(x)||0;
+const APP_VERSION='3.0.3',REPO='kaangs36-bit/MASAILERIM',today=()=>new Date().toISOString().slice(0,10),month=x=>String(x||today()).slice(0,7),n=x=>Number(x)||0;
 const defaults={sites:['Atölye','Ofis','Montaj','Sevkiyat'],movements:[],monthLocks:[],notifications:[],snapshots:[],settings:{defaultPresent:true},version:3};
 function upgradeV3(){
  Object.entries(defaults).forEach(([k,v])=>{if(db[k]===undefined)db[k]=clone(v)});
+ ['employees','records','payments','trash','undo','audit','sites','movements','monthLocks','notifications','snapshots'].forEach(k=>{if(!Array.isArray(db[k]))db[k]=clone(defaults[k]||[])});
+ if(!db.settings||typeof db.settings!=='object')db.settings={defaultPresent:true};
  db.employees.forEach(e=>{const old={...e};Object.assign(e,{payType:'monthly',rate:0,phone:'',role:'',startDate:'',leaveEntitlement:14,startTime:'08:00',endTime:'18:00',overtimeFactor:1.5,defaultSite:'Atölye',note:'',active:true},old)});
  db.records.forEach(r=>{const old={...r};Object.assign(r,{site:'',note:''},old)});db.payments.forEach(p=>{const old={...p};Object.assign(p,{date:p.date||p.period+'-28',method:'Banka',note:''},old)});
 }
 const locked=p=>db.monthLocks.includes(p||currentPeriod());
 function snapshotV3(label){db.undo=Array.isArray(db.undo)?db.undo:[];const data=clone({...db,undo:[],snapshots:[],audit:(db.audit||[]).slice(0,50),trash:(db.trash||[]).slice(0,20)});db.undo.push({id:uid(),label,at:new Date().toISOString(),data});db.undo=db.undo.slice(-3);db.snapshots=[]}
-function compactForStorage(){db.undo=Array.isArray(db.undo)?db.undo.slice(-3):[];db.snapshots=[];db.audit=Array.isArray(db.audit)?db.audit.slice(0,150):[];db.trash=Array.isArray(db.trash)?db.trash.slice(0,50):[];let json=JSON.stringify(db);if(new Blob([json]).size>4200000){db.undo=[];db.audit=db.audit.slice(0,50);db.trash=db.trash.slice(0,20);json=JSON.stringify(db)}return json}
-persist=function(msg){try{const json=compactForStorage();localStorage.setItem(STORE,json);renderAll();if(window.cloudSync)window.cloudSync.localChanged();if(msg)toast(msg)}catch(e){console.error('Yerel kayıt hatası',e);try{db.undo=[];db.snapshots=[];db.audit=[];db.trash=[];localStorage.setItem(STORE,JSON.stringify(db));renderAll();if(window.cloudSync)window.cloudSync.localChanged();if(msg)toast(msg+' (geçmiş temizlendi)')}catch(last){console.error('Yerel kayıt tekrar başarısız',last);alert('Kayıt bilgisayara yazılamadı. Hata: '+(last.name||last.message||'Bilinmeyen hata'))}}};
-function audit(label,detail=''){db.audit.unshift({id:uid(),label,detail,actor:(window.cloudSync?.email||'Kullanıcı'),at:new Date().toISOString()});db.audit=db.audit.slice(0,500)}
+function compactForStorage(){upgradeV3();db.undo=db.undo.slice(-3);db.snapshots=[];db.audit=db.audit.slice(0,150);db.trash=db.trash.slice(0,50);let json=JSON.stringify(db);if(json.length>4200000){db.undo=[];db.audit=db.audit.slice(0,50);db.trash=db.trash.slice(0,20);json=JSON.stringify(db)}return json}
+persist=function(msg){
+ let saved=false,trimmed=false;
+ try{localStorage.setItem(STORE,compactForStorage());saved=true}
+ catch(e){console.error('Yerel kayıt hatası',e);try{upgradeV3();db.undo=[];db.snapshots=[];db.audit=[];db.trash=[];localStorage.setItem(STORE,JSON.stringify(db));saved=true;trimmed=true}catch(last){console.error('Yerel kayıt tekrar başarısız',last);alert('Kayıt bilgisayara yazılamadı: '+(last.message||last.name||'Bilinmeyen hata'))}}
+ if(!saved)return false;
+ try{renderAll()}catch(e){console.error('Ekran yenileme hatası',e)}
+ try{window.cloudSync?.localChanged?.()}catch(e){console.warn('Senkronizasyon bildirimi hatası',e)}
+ try{if(msg&&typeof toast==='function')toast(msg+(trimmed?' (geçmiş temizlendi)':''))}catch(e){console.warn('Bildirim hatası',e)}
+ return true;
+};
+function audit(label,detail=''){if(!Array.isArray(db.audit))db.audit=[];db.audit.unshift({id:uid(),label,detail,actor:(window.cloudSync?.email||'Kullanıcı'),at:new Date().toISOString()});db.audit=db.audit.slice(0,500)}
 function commit(label,detail=''){audit(label,detail);persist(label)}
 function activePeople(){return db.employees.filter(e=>e.active!==false)}
 function getRecord(eid,date){return db.records.find(r=>r.employeeId===eid&&r.date===date)}

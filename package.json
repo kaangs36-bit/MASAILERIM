@@ -1,6 +1,6 @@
 {
   "name": "mrl-personel-takip",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "private": true,
   "main": "electron-main.js",
   "scripts": {
@@ -24,20 +24,8 @@
   "build": {
     "appId": "com.mrl.mesailerim.desktop",
     "productName": "Mesailerim",
-    "directories": {
-      "output": "dist"
-    },
-    "files": [
-      "www/**/*",
-      "electron-main.js"
-    ],
-    "win": {
-      "target": [
-        "portable"
-      ],
-      "artifactName": "Mesailerim.exe",
-      "icon": "resources/icon.png"
-    }
-  },
-  "buildNumber": "2026.11.19.1"
+    "directories": { "output": "dist" },
+    "files": ["www/**/*", "electron-main.js"],
+    "win": { "target": ["portable"], "artifactName": "Mesailerim.exe", "icon": "resources/icon.png" }
+  }
 }
