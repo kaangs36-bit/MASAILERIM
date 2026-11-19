@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="sync.css" />
   <link rel="stylesheet" href="theme.css" />
   <link rel="stylesheet" href="v2.css" />
+  <link rel="stylesheet" href="v3.css" />
 </head>
 <body>
   <header>
@@ -27,6 +28,9 @@
         <article><span>Toplam avans</span><b id="totalAdvance">₺0</b></article>
         <article><span>Kalan ödeme</span><b id="totalRemaining">₺0</b></article>
       </div>
+      <div id="smartAlerts" class="smart-alerts"></div>
+      <div class="section-title"><h2>Bugünün durumu</h2><button class="link" id="openNotifications">Bildirimler</button></div>
+      <div id="todayAttendance" class="today-attendance"></div>
       <div class="section-title"><h2>Personel ödeme özeti</h2><button class="link" data-page="employees">Personeller</button></div>
       <div id="summaryList" class="list"></div>
     </section>
@@ -43,7 +47,8 @@
         <label>Tarih<input id="quickDate" type="date"></label>
         <div class="quick-actions"><button class="mini" id="markAllPresent">Tümünü geldi yap</button><button class="mini" id="copyYesterday">Dünü kopyala</button><button class="mini" id="copySaturday">Son cumartesiyi kopyala</button><button class="mini" id="clearQuickHours">Mesaileri temizle</button></div>
         <div class="batch-bar"><label><input id="selectAllQuick" type="checkbox"> Tümünü seç</label><button class="mini batch-status" data-status="present">Geldi</button><button class="mini batch-status" data-status="absent">Gelmedi</button><button class="mini batch-status" data-status="paid_leave">İzinli</button><button class="mini batch-hours" data-hours="1">+1 sa.</button><button class="mini batch-hours" data-hours="2">+2 sa.</button><button class="mini batch-hours" data-hours="3">+3 sa.</button></div>
-        <div class="quick-head"><span>Personel / Durum</span><span>Mesai</span><span>Avans</span><span>Yemek</span></div>
+        <p class="default-present-note">✓ Tüm aktif personeller otomatik olarak <b>Geldi</b> kabul edilir. Yalnızca farklı durumu olanları değiştirmen yeterli.</p>
+        <div class="quick-head"><span>Personel / Durum</span><span>Mesai</span><span>İş yeri</span><span>Not</span></div>
         <div id="quickList"></div>
         <button class="wide" id="saveQuick">Tüm personeli kaydet</button>
       </div>
@@ -69,7 +74,14 @@
         <button id="reportAttendanceExcel"><b>▦</b><span>Puantaj Excel</span></button>
         <button id="reportOvertimePdf"><b>⏱</b><span>Mesai PDF</span></button>
         <button id="reportAbsencePdf"><b>!</b><span>Devamsızlık PDF</span></button>
+        <button id="reportAdvancePdf"><b>₺</b><span>Avans PDF</span></button>
+        <button id="reportLeavePdf"><b>☂</b><span>İzin PDF</span></button>
+        <button id="reportSitePdf"><b>⌖</b><span>İş yeri PDF</span></button>
+        <button id="reportYearlyExcel"><b>▦</b><span>Yıllık özet Excel</span></button>
       </div>
+      <div class="settings-card"><div class="section-title"><h3>Ay sonu işlemleri</h3><span id="monthLockBadge"></span></div><p>Ayı kapattığında kayıtlar yanlışlıkla değiştirilemez. İstediğin zaman tekrar açabilirsin.</p><button class="wide" id="toggleMonthLock">Bu ayı kapat</button></div>
+      <div class="settings-card"><h3>Kontrol edilmesi gerekenler</h3><div id="validationList"></div></div>
+      <div class="settings-card"><h3>İşlem geçmişi</h3><div id="auditList"></div></div>
       <div class="settings-card"><h3>Silinen Kayıtlar</h3><p>Yanlışlıkla silinen personel veya günlük kayıtlar buradan geri alınabilir.</p><div id="trashList"></div></div>
     </section>
 
@@ -95,6 +107,15 @@
         <button class="wide" id="exportCsv">Aylık özeti CSV indir</button>
         <p>Veriler bu telefonda çevrimdışı saklanır. Uygulamayı silmeden veya telefon değiştirmeden önce yedek alın.</p>
       </div>
+      <h2>İş yerleri ve uygulama</h2>
+      <div class="settings-card">
+        <div class="section-title"><h3>Şantiye / iş yerleri</h3><button class="mini" id="addSite">+ Ekle</button></div>
+        <div id="siteList"></div>
+      </div>
+      <div class="settings-card update-card">
+        <div><h3>Uygulama güncellemesi</h3><p id="versionInfo">Yüklü sürüm kontrol ediliyor…</p></div>
+        <button class="wide" id="checkUpdate">Yeni sürümü kontrol et</button>
+      </div>
     </section>
   </main>
 
@@ -114,6 +135,12 @@
       <label>Ad soyad<input id="employeeName" required></label>
       <label>Aylık maaş<input id="employeeSalary" type="number" min="0" step="0.01" required></label>
       <label>Aylık normal çalışma saati<input id="employeeHours" type="number" min="1" value="300" required></label>
+      <div class="form-grid"><label>Ücret türü<select id="employeePayType"><option value="monthly">Aylık maaş</option><option value="daily">Günlük yevmiye</option><option value="hourly">Saatlik ücret</option></select></label><label>Günlük/Saatlik ücret<input id="employeeRate" type="number" min="0" step="0.01" value="0"></label></div>
+      <div class="form-grid"><label>Telefon<input id="employeePhone" type="tel"></label><label>Görev / Ünvan<input id="employeeRole"></label></div>
+      <div class="form-grid"><label>İşe giriş<input id="employeeStartDate" type="date"></label><label>Yıllık izin hakkı<input id="employeeLeaveEntitlement" type="number" min="0" value="14"></label></div>
+      <div class="form-grid"><label>Normal giriş<input id="employeeStartTime" type="time" value="08:00"></label><label>Normal çıkış<input id="employeeEndTime" type="time" value="18:00"></label></div>
+      <div class="form-grid"><label>Mesai katsayısı<input id="employeeOvertimeFactor" type="number" min="1" step="0.1" value="1.5"></label><label>Varsayılan iş yeri<select id="employeeDefaultSite"></select></label></div>
+      <label>Personel notu<textarea id="employeeNote"></textarea></label>
       <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
     </form>
   </dialog>
@@ -128,6 +155,7 @@
       <label>Mesai saati<input id="recordOvertimeHours" type="number" min="0" step="0.5" value="0"></label>
       <label>Avans<input id="recordAdvance" type="number" min="0" step="0.01" value="0"></label>
       <label>Yemek fişi<input id="recordMeal" type="number" min="0" step="0.01" value="0"></label>
+      <label>İş yeri<select id="recordSite"></select></label>
       <label>Not<input id="recordNote"></label>
       <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
     </form>
@@ -146,10 +174,25 @@
       <input type="hidden" id="paymentEmployeeId">
       <p id="paymentPerson"></p>
       <label>Ödenen tutar<input id="paymentAmount" type="number" min="0" step="0.01" required></label>
+      <div class="form-grid"><label>Ödeme tarihi<input id="paymentDate" type="date"></label><label>Ödeme yöntemi<select id="paymentMethod"><option>Nakit</option><option>Banka</option><option>Diğer</option></select></label></div>
+      <label>Açıklama<input id="paymentNote"></label>
       <div class="payment-shortcuts"><button type="button" class="mini" id="payFull">Tamamını öde</button><button type="button" class="mini" id="payNone">Ödeme bekliyor</button></div>
       <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
     </form>
   </dialog>
+
+  <dialog id="movementDialog">
+    <form id="movementForm" method="dialog">
+      <h3>Yeni mali hareket</h3><input type="hidden" id="movementEmployeeId">
+      <label>Hareket türü<select id="movementType"><option value="advance">Avans</option><option value="bonus">Prim</option><option value="allowance">Harcırah / ek ödeme</option><option value="deduction">Kesinti</option><option value="travel">Yol parası</option><option value="meal_support">Yemek parası</option></select></label>
+      <div class="form-grid"><label>Tarih<input id="movementDate" type="date" required></label><label>Tutar<input id="movementAmount" type="number" min="0" step="0.01" required></label></div>
+      <label>Açıklama<input id="movementNote"></label>
+      <div class="form-grid"><label>Kesinti başlangıç ayı<input id="movementPeriod" type="month"></label><label>Taksit sayısı<input id="movementInstallments" type="number" min="1" max="24" value="1"></label></div>
+      <div class="actions"><button type="button" class="ghost close">Vazgeç</button><button class="primary" value="save">Kaydet</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="notificationsDialog"><div class="dialog-body"><div class="detail-head"><h3>Bildirimler ve uyarılar</h3><button class="icon dark close">×</button></div><div id="notificationList"></div></div></dialog>
 
   <div id="toast"></div>
   <script src="pdfmake.min.js"></script>
@@ -157,5 +200,6 @@
   <script src="app.js"></script>
   <script src="app-v2.js"></script>
   <script src="sync.js"></script>
+  <script src="app-v3.js"></script>
 </body>
 </html>

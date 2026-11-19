@@ -5,9 +5,18 @@ on:
   push:
     branches: [main, master]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      APP_VERSION: 3.0.0
+      KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
     steps:
       - name: Projeyi al
         uses: actions/checkout@v4
@@ -15,13 +24,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
       - name: Java kur
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
       - name: Paketleri kur
-        run: npm install
+        run: npm ci
       - name: PDF motorunu uygulamaya ekle
         run: |
           cp node_modules/pdfmake/build/pdfmake.min.js www/pdfmake.min.js
@@ -32,12 +42,41 @@ jobs:
         run: |
           npm run build:icons
           npx capacitor-assets generate --android
-      - name: APK derle
+      - name: Kalıcı imzayı hazırla
+        if: env.KEYSTORE_B64 != ''
+        run: echo "$KEYSTORE_B64" | base64 --decode > android/mesailerim-release.jks
+      - name: Güncellenebilir imzalı APK derle
+        if: env.KEYSTORE_B64 != ''
+        working-directory: android
+        run: >-
+          ./gradlew assembleRelease
+          -Pandroid.injected.signing.store.file=${{ github.workspace }}/android/mesailerim-release.jks
+          -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD"
+          -Pandroid.injected.signing.key.alias="$KEY_ALIAS"
+          -Pandroid.injected.signing.key.password="$KEY_PASSWORD"
+      - name: İmza yoksa test APK derle
+        if: env.KEYSTORE_B64 == ''
         working-directory: android
         run: ./gradlew assembleDebug
+      - name: APK dosyasını adlandır
+        run: |
+          if [ -f android/app/build/outputs/apk/release/app-release.apk ]; then
+            cp android/app/build/outputs/apk/release/app-release.apk Mesailerim-v${APP_VERSION}.apk
+          else
+            cp android/app/build/outputs/apk/debug/app-debug.apk Mesailerim-v${APP_VERSION}-test.apk
+          fi
       - name: APK dosyasını yükle
         uses: actions/upload-artifact@v4
         with:
-          name: MRL-Personel-Takip-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
-          retention-days: 30
+          name: Mesailerim-v${{ env.APP_VERSION }}
+          path: Mesailerim-*.apk
+          retention-days: 90
+      - name: GitHub sürümünü yayınla
+        if: env.KEYSTORE_B64 != ''
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.APP_VERSION }}
+          name: Mesailerim v${{ env.APP_VERSION }}
+          body: "Gelişmiş puantaj, ödeme, iş yeri, raporlama ve uygulama içi güncelleme sürümü."
+          files: Mesailerim-v${{ env.APP_VERSION }}.apk
+          make_latest: true
